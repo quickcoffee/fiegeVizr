@@ -1,0 +1,127 @@
+library(extrafont)
+extrafont::font_import()
+loadfonts(device = "win")
+
+#show available fonts
+fonttable() %>% 
+  tibble %>% 
+  view()
+
+#create FIEGE corporate colors vector
+fiege_colors <- c(
+  `red`        = "#B82136",
+  `dark gray`      = "#4D4D4D",
+  `light grey`       = "#B9B9BA",
+  `pink`     = "#FE325A",
+  `green`     = "#21BAA6",
+  `rose` = "#E3A6AF",
+  `orange grey`  = "#C19356",
+  `brown` = "#BA7321",
+  `black` = "#000000"
+)
+#' Function to extract fiege colors as hex codes
+#'
+#' @param ... Character names of fiege_colors 
+#'
+fiege_cols <- function(...) {
+  cols <- c(...)
+  
+  if (is.null(cols))
+    return (fiege_colors)
+  
+  fiege_colors[cols]
+}
+
+#create fiege color palettes
+fiege_palettes <- list(
+  `main`  = fiege_cols("red", "light grey", "dark grey"),
+  
+  `roses`  = fiege_cols("red", "rose"),
+  
+  `hot`   = fiege_cols("red", "pink", "rose"),
+  
+  `mixed` = fiege_cols("red", "light grey", "dark grey", "pink", "green", "rose", "orange grey", "brown"),
+  
+  `grey`  = fiege_cols("light grey", "dark grey", "black")
+)
+
+#' Return function to interpolate a fiege color palette
+#'
+#' @param palette Character name of palette in fiege_palettes
+#' @param reverse Boolean indicating whether the palette should be reversed
+#' @param ... Additional arguments to pass to colorRampPalette()
+#'
+fiege_pal <- function(palette = "main", reverse = FALSE, ...) {
+  pal <- fiege_palettes[[palette]]
+  
+  if (reverse) pal <- rev(pal)
+  
+  colorRampPalette(pal, ...)
+}
+
+#' Color scale constructor for fiege colors
+#'
+#' @param palette Character name of palette in fiege_palettes
+#' @param discrete Boolean indicating whether color aesthetic is discrete or not
+#' @param reverse Boolean indicating whether the palette should be reversed
+#' @param ... Additional arguments passed to discrete_scale() or
+#'            scale_color_gradientn(), used respectively when discrete is TRUE or FALSE
+#'
+scale_color_fiege <- function(palette = "main", discrete = TRUE, reverse = FALSE, ...) {
+  pal <- fiege_pal(palette = palette, reverse = reverse)
+  
+  if (discrete) {
+    discrete_scale("colour", paste0("fiege_", palette), palette = pal, ...)
+  } else {
+    scale_color_gradientn(colours = pal(256), ...)
+  }
+}
+
+#' Fill scale constructor for fiege colors
+#'
+#' @param palette Character name of palette in fiege_palettes
+#' @param discrete Boolean indicating whether color aesthetic is discrete or not
+#' @param reverse Boolean indicating whether the palette should be reversed
+#' @param ... Additional arguments passed to discrete_scale() or
+#'            scale_fill_gradientn(), used respectively when discrete is TRUE or FALSE
+#'
+scale_fill_fiege <- function(palette = "main", discrete = TRUE, reverse = FALSE, ...) {
+  pal <- fiege_pal(palette = palette, reverse = reverse)
+  
+  if (discrete) {
+    discrete_scale("fill", paste0("fiege_", palette), palette = pal, ...)
+  } else {
+    scale_fill_gradientn(colours = pal(256), ...)
+  }
+}
+
+
+
+
+fiege_theme <- #ggthemes::theme_foundation()+
+  theme_minimal()+
+  theme(
+      # modify text, axis and colour 4) and 5)
+      axis.text = element_text(colour = "#000000", family = "HelveticaNeue-Light"),
+      axis.title = element_text(colour = "#000000", family = "HelveticaNeue-Light"),
+      axis.ticks = element_line(colour = "#000000")
+    )
+
+
+
+###TEST IT
+library(tidyverse)
+library(lubridate)
+
+data <- read_csv(file = "https://recruitingapp-5438.de.umantis.com/CSVExport/146?Key=bi_dev", skip = 1) %>% 
+  mutate(across(.cols = c(Erstelldatum, BesetztAm, Erstelldatum_tth), lubridate::ymd_hms)) %>% 
+  janitor::clean_names()
+
+#time to hire diagramm mit original Erstelldatum
+theme_set(fiege_theme)
+data %>%
+  group_by("week" = lubridate::floor_date(besetzt_am, unit = "week", week_start = 1), unit =benutzerdefinierte_liste_stelle2 ) %>%
+  summarise(time_to_hire_in_tagen_weekly = mean(time_to_hire_in_tagen), besetzte_stellen = n()) %>% 
+  ggplot(aes(x=week, y=time_to_hire_in_tagen_weekly, color=unit))+
+  geom_point(size = 5, alpha = .8)+
+  scale_color_fiege(discrete = T, palette = "mixed")
