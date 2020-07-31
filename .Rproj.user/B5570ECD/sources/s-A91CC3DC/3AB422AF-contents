@@ -1,0 +1,15 @@
+library(tidyverse)
+devtools::load_all()
+
+
+
+ggplot(mtcars, aes(x=hp, y=mpg, color = as_factor(cyl)))+
+  geom_point(size = 5, alpha=.8)+
+  labs(title = "Test title (bla bla) FIEGE",
+      subtitle = "sub caption for something",
+      x = "MPG",
+      y = "HP",
+      caption = "Source: FIEGE Logistik",
+      color = "cyl")+
+  fiegeVizr::scale_color_fiege()+
+  fiege_theme(base_size = 12)

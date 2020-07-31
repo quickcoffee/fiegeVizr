@@ -1,14 +1,20 @@
 #create FIEGE corporate colors vector
 fiege_colors <- c(
   `red`        = "#B82136",
-  `dark gray`      = "#4D4D4D",
-  `light grey`       = "#B9B9BA",
+  `dark grey`      = "#464646",
+  `grey 1` = "#8C8C8C",
+  `grey 2`       = "#D2D2D2",
   `pink`     = "#FE325A",
-  `green`     = "#21BAA6",
-  `rose` = "#E3A6AF",
+  `turquoise 1` = "#044040",
+  `turquoise 2` = "#0D6B6B",
+  `turquoise 3` ="#21BAA6",
+  `violet` = '#8521B8',
+  `rose` = "#C85968",
+  `rose grey` = '#CE8F8F',
   `orange grey`  = "#C19356",
   `brown` = "#BA7321",
-  `black` = "#000000"
+  `black` = "#000000",
+  `white` = "#FFFFFF"
 )
 
 #helper functions
@@ -27,15 +33,17 @@ fiege_cols <- function(...) {
 
 #create fiege color palettes
 fiege_palettes <- list(
-  `main`  = fiege_cols("red", "light grey", "dark grey"),
+  `main`  = fiege_cols("red", "dark grey", "rose", "turquoise 3"),
 
-  `roses`  = fiege_cols("red", "rose"),
+  `roses`  = fiege_cols("red", "violet", "rose grey"),
 
-  `hot`   = fiege_cols("red", "pink", "rose"),
+  `hot`   = fiege_cols("red", "violet", "turquoise 1", "brown"),
 
-  `mixed` = fiege_cols("red", "light grey", "dark grey", "pink", "green", "rose", "orange grey", "brown"),
+  `mixed` = fiege_cols("red", "dark grey", "violet", "turquoise 1", "turquoise 3", "rose", "orange grey", "brown"),
 
-  `grey`  = fiege_cols("light grey", "dark grey", "black")
+  `grey`  = fiege_cols("grey 1", "dark grey", "black"),
+
+  `bg` = fiege_cols("grey 1", "dark grey", "white")
 )
 
 #' Return function to interpolate a fiege color palette

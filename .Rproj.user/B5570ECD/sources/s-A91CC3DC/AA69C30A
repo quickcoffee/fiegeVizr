@@ -1,21 +1,24 @@
 {
     "id": "AA69C30A",
-    "path": "~/GitHub/fiegeVizr/R/color_pals.R",
+    "path": "C:/Users/luksteger/Fiege Logistik Stiftung & Co. KG/GitHub/fiegeVizr/R/color_pals.R",
     "project_path": "R/color_pals.R",
     "type": "r_source",
-    "hash": "1863420072",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1596028585796.0,
     "source_on_save": false,
     "relative_order": 3,
-    "properties": {},
+    "properties": {
+        "cursorPosition": "41,37",
+        "scrollLine": "30"
+    },
     "folds": "",
-    "lastKnownWriteTime": 1596027725,
+    "lastKnownWriteTime": 1596196668,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1596027725,
+    "last_content_update": 1596196668455,
     "read_only": false,
     "read_only_alternatives": []
 }
